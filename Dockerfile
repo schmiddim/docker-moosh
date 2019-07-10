@@ -1,8 +1,8 @@
-FROM php:5.6-cli
+FROM php:7.2-cli
 
-MAINTAINER brendan_anderson@hcpss.org
+MAINTAINER mail@itschmitt.com
 
-LABEL vendor=Howard\ County\ Public\ School\ System \
+LABEL vendor=IT\ Schmitt\
 	org.hcpss.version="1.0.0" \
 	org.hcpss.name="moosh"
 
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 		libicu-dev \
 		libfreetype6-dev \
 		libjpeg62-turbo-dev \
-		libpng12-dev \
+		libpng-dev \
 		libldap2-dev \
 		libxml2-dev \
 		--no-install-recommends \
@@ -22,8 +22,10 @@ RUN apt-get update && apt-get install -y \
 		--with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
 	&& docker-php-ext-install \
-		intl ldap mcrypt mysqli gd iconv zip simplexml xml json tokenizer \
+		intl ldap  mysqli gd iconv zip simplexml xml json tokenizer \
 		intl xmlrpc soap opcache
+RUN pecl install mcrypt-1.0.2 
+RUN docker-php-ext-enable mcrypt
 
 COPY install-composer.sh /install-composer.sh
 
